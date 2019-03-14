@@ -1,22 +1,17 @@
 // Business Logic for AddressBook
-function AddressBook() {
-  this.contacts = []
-}
-
-AddressBook.prototype.addContact = function(contact) {
-  this.contacts.push(contact);
-}
+// function AddressBook() {
+//   this.contacts = []
+// }
+//
+// AddressBook.prototype.addContact = function(contact) {
+//   this.contacts.push(contact);
+// }
 
 // Business Logic for Contacts
-function Contact(firstName, lastName, phoneNumber) {
-  this.firstName = firstName;
-  this.lastName = lastName;
-  this.phoneNumber = phoneNumber;
+function Contact(first, last) {
+  this.firstName = first;
+  this.lastName = last;
   this.addresses = [];
-}
-
-Contact.prototype.fullName = function() {
-  return this.firstName + " " + this.lastName;
 }
 
 function Address(street, city, state) {
@@ -25,8 +20,20 @@ function Address(street, city, state) {
   this.state = state;
 }
 
+Contact.prototype.fullName = function() {
+  return this.firstName + " " + this.lastName;
+}
+
 Address.prototype.fullAddress = function() {
   return this.street + ", " + this.city + " " + this.state;
+}
+
+function resetFields() {
+    $("input#new-first-name").val("");
+    $("input#new-last-name").val("");
+    $("input.new-street").val("");
+    $("input.new-city").val("");
+    $("input.new-state").val("");
 }
 
 //User Interface Logic
@@ -64,22 +71,20 @@ $(document).ready(function() {
       newContact.addresses.push(newAddress);
     });
 
-   $("ul#contacts").append("<li><span class = 'contact'>" + newContact.fulName() + "</span></li>");
+   $("ul#contacts").append("<li><span class = 'contact'>" + newContact.fullName() + "</span></li>");
 
    $(".contact").last().click(function() {
      $("#show-contact").show();
-     $("show-contact h2").text(newContact.firstName);
-     $(".first-name").text(newContact.lastName);
+     $("show-contact h2").text(newContact.fullName());
+     $(".first-name").text(newContact.firstName);
      $(".last-name").text(newContact.lastName);
      $("ul#addresses").text("");
      newContact.addresses.forEach(function(address) {
-       $("ul#address").append("<li>" + address.fullAddress() + "</li>");
+       $("ul#addresses").append("<li>" + address.fullAddress() + "</li>");
      })
    });
 
-   $("input#new-first-name").val("");
-   $("input#new-last-name").val("");
-   $("input.new-street").val("");
-   $("input.new-state").val("");
+   resetFields();
+
  });
 });
